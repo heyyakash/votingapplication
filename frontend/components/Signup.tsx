@@ -1,3 +1,6 @@
+import { createUser } from '@/api/user';
+import { signupData } from '@/types/user.types';
+import { useRouter } from 'next/router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -5,20 +8,17 @@ interface props {
     setMode: Dispatch<SetStateAction<string>>
 }
 
-interface data {
-    firstname: string,
-    lastname: string,
-    email: string,
-    password: string
-    age:number,
-    gender:string
-}
 
 const SignupComponent: React.FC<props> = ({ setMode }) => {
-    const submitDetails = async (data: data) => {
-        console.log(data)
+
+    const submitDetails = async (data: signupData) => {
+        const res = await createUser(data)
+        if(res?.status){
+            setMode('login')
+        }
+  
     }
-    const { handleSubmit, register } = useForm<data>()
+    const { handleSubmit, register } = useForm<signupData>()
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
@@ -69,7 +69,7 @@ const SignupComponent: React.FC<props> = ({ setMode }) => {
                             Gender
                         </label>
                         <select
-                            {...register("lastname")}
+                            {...register("gender")}
                             id="gender"
                             name="gender"
                             className="input-primary py-[.630rem]"

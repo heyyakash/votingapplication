@@ -1,3 +1,6 @@
+import { loginUser } from '@/api/user';
+import { loginData } from '@/types/user.types';
+import { useRouter } from 'next/router';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -5,16 +8,18 @@ interface props {
     setMode: Dispatch<SetStateAction<string>>
 }
 
-interface data {
-    email: string,
-    password: string
-}
+
 
 const LoginComponent: React.FC<props> = ({ setMode }) => {
-    const submitDetails = async (data: data) => {
-        console.log(data)
+    const router = useRouter()
+    const submitDetails = async (data: loginData) => {
+        const res = await loginUser(data)
+        if(res?.status){
+            localStorage.setItem('votingapp_user',res?.authToken)
+            router.push('/')
+        }
     }
-    const { handleSubmit, register } = useForm<data>()
+    const { handleSubmit, register } = useForm<loginData>()
     
     return (
         <div className="flex flex-col items-center justify-center h-screen">
