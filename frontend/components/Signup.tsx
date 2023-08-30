@@ -6,10 +6,12 @@ interface props {
 }
 
 interface data {
-    firstname:string,
-    lastname:string,
+    firstname: string,
+    lastname: string,
     email: string,
     password: string
+    age:number,
+    gender:string
 }
 
 const SignupComponent: React.FC<props> = ({ setMode }) => {
@@ -17,10 +19,10 @@ const SignupComponent: React.FC<props> = ({ setMode }) => {
         console.log(data)
     }
     const { handleSubmit, register } = useForm<data>()
-    
+
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-3xl font-semibold mb-6">Welcome Back!</h1>
+            <h1 className="text-3xl font-semibold mb-6">Signup</h1>
             <form onSubmit={handleSubmit(submitDetails)} className="w-[390px]">
                 <div className="mb-4">
                     <label htmlFor="firstname" className="block text-sm font-medium mb-1">
@@ -47,6 +49,35 @@ const SignupComponent: React.FC<props> = ({ setMode }) => {
                         className="input-primary"
                         placeholder="Enter your last name"
                     />
+                </div>
+                <div className="flex gap-2">
+                    <div className="mb-4 w-[30%]">
+                        <label htmlFor="age" className="block text-sm font-medium mb-1">
+                            Age
+                        </label>
+                        <input
+                            {...register("age")}
+                            type="number"
+                            id="age"
+                            name="age"
+                            className="input-primary appearance-none"
+                            placeholder="Age"
+                        />
+                    </div>
+                    <div className="mb-4 flex-grow">
+                        <label htmlFor="gender" className="block text-sm font-medium mb-1">
+                            Gender
+                        </label>
+                        <select
+                            {...register("lastname")}
+                            id="gender"
+                            name="gender"
+                            className="input-primary py-[.630rem]"
+                        >   
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -82,7 +113,7 @@ const SignupComponent: React.FC<props> = ({ setMode }) => {
                         Sign Up
                     </button>
                     <button
-                        onClick={() => setMode("signup")}
+                        onClick={() => setMode("login")}
                         type="button"
                         className="bg-white py-2 rounded-sm text-blue-500 w-full hover:underline"
                     >

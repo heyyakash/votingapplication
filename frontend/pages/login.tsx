@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 const App = () => {
     const [mode, setMode] = useState("login")
     return (
-        <div className="bg-[url('/login.svg')] bg-no-repeat bg-cover min-h-screen flex items-center justify-center">
+        <div className="bg-[url('/login.svg')] text-white bg-no-repeat bg-cover min-h-screen flex items-center justify-center">
             {mode==="login"?(
                 <LoginComponent setMode={setMode} />
             ):(
