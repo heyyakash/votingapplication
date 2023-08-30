@@ -30,6 +30,18 @@ body {
 }
 
 
+@layer base{
+  h1{
+    @apply text-[3rem] font-[600];
+  }
+  h2{
+    @apply text-[2.5rem] font-[600];
+  }
+  h3{
+    @apply text-[2rem] font-[500];
+  }
+}
+
 @layer components{
   .input-primary{
     @apply p-2 text-lg bg-white/10 outline-none border-none rounded-md w-full focus:ring focus:ring-blue-400 my-1;
