@@ -1,8 +1,9 @@
 const express = require("express")
 const router = express.Router()
+const { VerifyUser} = require("../middlewares/verify")
 const Election = require("../models/election.model")
 
-router.post('/create',async (req,res) => {
+router.post('/create',VerifyUser ,async (req,res) => {
     try{
         const {electionName, electionTopic, electionDescription} = req.body
         if(!electionName || !electionTopic || !electionDescription){
@@ -11,7 +12,8 @@ router.post('/create',async (req,res) => {
         const payload = await Election.create({
             electionName,
             electionTopic, 
-            electionDescription
+            electionDescription,
+            createdBy: req.user
         })
         res.status(200).json({status:true, msg:payload})
     }catch(err){
@@ -24,7 +26,6 @@ router.post('/create',async (req,res) => {
 router.get('/:id', async (req,res) => { 
     try {
         const {id} = req.params
-        console.log(id)
         const payload = await Election.findOne({
             "_id":id
         })
