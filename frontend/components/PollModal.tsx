@@ -1,5 +1,7 @@
+import { createELection } from '@/api/election'
 import modalState from '@/atoms/modal'
 import { useAtom } from 'jotai'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { IoIosClose } from 'react-icons/io'
@@ -17,11 +19,14 @@ const PollModal = () => {
         reset()
         setIsOpen(false)
     }
+    const router = useRouter()
 
-    
-
-    const onSumbit = (data:data) => {
-        console.log(data)
+    const onSumbit = async (data:data) => {
+        const res = await createELection(data)
+        if(res.status){
+            setIsOpen(false)
+            router.push(`election/${res.msg["_id"]}`)
+        }
     }
 
     if (isOpen)

@@ -43,7 +43,11 @@ body {
 }
 
 @layer components{
+  .button{
+    @apply bg-green-500 p-2 my-2 w-full rounded-md cursor-pointer;
+  }
   .input-primary{
     @apply p-2 text-lg bg-white/10 outline-none border-none rounded-md w-full focus:ring focus:ring-blue-400 my-1;
   }
 }
+
