@@ -16,7 +16,7 @@ export const createELection = async (data:electionData) => {
         body:JSON.stringify(data)
     })
     const res = await result.json()
-    return res
+    return res  
 }
 
 
