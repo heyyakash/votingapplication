@@ -1,8 +1,9 @@
-const { Schema } = require("mongoose");
+const { Schema, default: mongoose } = require("mongoose");
 
 const candidate = new Schema({
     uid:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'users',
         required:true
     },
     votes:{

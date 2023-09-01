@@ -20,7 +20,7 @@ const election = new Schema({
     },
     candidates:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'candidate'
+        ref: 'candidates'
     }]
 })
 
