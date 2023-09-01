@@ -1,3 +1,4 @@
+import { createCandidate, getCandidatesForElection } from '@/api/candidate'
 import { getElection } from '@/api/election'
 import UserCard from '@/components/Card'
 import { useRouter } from 'next/router'
@@ -9,15 +10,25 @@ const App = () => {
     const router = useRouter()
     const { id } = router.query
     const { data: result } = useQuery(['election', id], async () => await getElection(id as string))
+    const [candidates, setCandidates] = useState<any[]>([])
+    const { data:electionCandidates , isLoading, isError} = useQuery('candidates', async () => await getCandidatesForElection(id as string),{
+        onSuccess:(d)=>{
+            setCandidates(candidates => d.msg)
+        }
+    }) 
     const { msg: data } = result
-    const {register, handleSubmit} = useForm()
-    const [loading,setLoading] = useState(false)
-    const [candidates, setCandidates] = useState<string[]>([])
+    const { register, handleSubmit } = useForm<{email:string}>()
+    const [loading, setLoading] = useState(false)
+    
 
-    const createCandidate = async (data:{email:string}) => {
-        const {email} = data
-        const res = await createCandidate({email})
-        console.log(res)
+    const createAndFetchCandidate = async (data: { email: string }) => {
+        const { email } = data
+        const res = await createCandidate(email, id as string)
+        if (res?.status) {
+            console.log(res?.msg)
+            setCandidates(candidates => [...candidates, res?.msg])
+        }
+
     }
 
     return (
@@ -32,23 +43,24 @@ const App = () => {
                 <br />
 
                 <div className="w-full bg-white/10 rounded-md p-8">
-                    <h3>Add Candidates</h3> 
-                    <form>
+                    <h3>Add Candidates</h3>
+                    <form onSubmit={handleSubmit(createAndFetchCandidate)}>
                         <div className='flex flex-col gap-2 my-2'>
                             <label htmlFor="name" className='px-1 text-sm font-semibold'>Email of the candidate</label>
-                            <input type="text" {...register("email")} required className='input-primary' placeholder='Enter the email of the candidate' />
+                            <input type="email" required {...register("email")}  className='input-primary' placeholder='Enter the email of the candidate' />
                         </div>
-                        <button type="submit" className='button'>Add Candidate</button>
+                        <button type="submit"  className='button'>Add Candidate</button>
                     </form>
-                    <div className="flex gap-4 justify-between flex-wrap items-center">
-                        <UserCard profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name = "Akash Sharma" email = "akashsharma200@gmail.com" age = {20} gender = "Male" />
-                        <UserCard profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name = "Akash Sharma" email = "akashsharma200@gmail.com" age = {20} gender = "Male" />
-                        <UserCard profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name = "Akash Sharma" email = "akashsharma200@gmail.com" age = {20} gender = "Male" />
-                        <UserCard profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name = "Akash Sharma" email = "akashsharma200@gmail.com" age = {20} gender = "Male" />
-                        <UserCard profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name = "Akash Sharma" email = "akashsharma200@gmail.com" age = {20} gender = "Male" />
+                    <div className="flex gap-6  flex-wrap items-center">
+                        {candidates.map((x, i) => {
+                            const { firstname, lastname, age, gender, email } = x?.uid
+                            return (
+                                <UserCard key={i} profileImage='https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' name={firstname + " " + lastname} email={email} age={age} gender={gender} />
+                            )
+                        })}
+
                     </div>
                 </div>
-
             </div>
         </section>
     )
