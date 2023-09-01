@@ -34,7 +34,7 @@ const App = () => {
     return (
         <section className='mt-[9rem] '>
             <div className="max-w-screen-xl px-4 mx-auto">
-                <div className="w-full bg-green-200/20 rounded-md p-4">
+                <div className="w-full bg-green-200/20  rounded-md p-8">
                     <h3>{data?.electionName}</h3>
                     <p>{data?.electionTopic}</p>
                     <p className='text-lg text-gray-400'>{data?.electionDescription}</p>
@@ -51,7 +51,7 @@ const App = () => {
                         </div>
                         <button type="submit"  className='button'>Add Candidate</button>
                     </form>
-                    <div className="flex gap-6  flex-wrap items-center">
+                    <div className="flex gap-6  flex-wrap items-cente mt-4">
                         {candidates.map((x, i) => {
                             const { firstname, lastname, age, gender, email } = x?.uid
                             return (

@@ -4,6 +4,7 @@ interface user {
     name:string,
     age:number,
     gender:string
+    type?:string
 }
 
 const UserCard:React.FC<user> = (user) => {
@@ -21,7 +22,8 @@ const UserCard:React.FC<user> = (user) => {
                 <p className="text-gray-600">{user.age} years old</p>
                 <p className="text-gray-600">{user.gender}</p>
                 <p className="mt-2 text-gray-600">{user.email}</p>
-                <button className="button mb-[-.08rem] bg-red-500">Remove</button>
+                {user.type && user.type==="vote"?(<button className="button mb-[-.08rem] bg-green-500">Vote</button>):(<button className="button mb-[-.08rem] bg-red-500">Remove</button>)}
+                
             </div>
         </div>
     );

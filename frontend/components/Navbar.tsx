@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {FaSquarePollHorizontal} from 'react-icons/fa6'
 
@@ -11,12 +12,12 @@ const Navbar = () => {
     return (
         <nav className="bg-black/80 fixed w-full z-20 top-0 left-0 border-b border-gray-600">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="https://flowbite.com/" className="flex items-center">
+                <Link href="/" className="flex items-center">
                     <FaSquarePollHorizontal className = "text-3xl mr-2" />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                        Poll-a-Soul
+                        Poll
                     </span>
-                </a>
+                </Link>
                 <div className="flex md:order-2">
                     <button
                         onClick={()=> logout()}
