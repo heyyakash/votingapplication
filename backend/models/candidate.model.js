@@ -6,6 +6,10 @@ const candidate = new Schema({
         ref:'users',
         required:true
     },
+    election:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
     votes:{
         type:Number,
         default:0
