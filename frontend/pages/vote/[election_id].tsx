@@ -1,7 +1,7 @@
 import { createCandidate, getCandidatesForElection } from '@/api/candidate'
 import { checkEligibilty, getElection } from '@/api/election'
 import UserCard from '@/components/Card'
-import Poll from '@/components/Poll'
+import PollContainer from '@/components/PolLContainer'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -44,7 +44,7 @@ const App = () => {
                 </div>
 
                 <br />
-                <Poll />
+                <PollContainer />
 
                 <div className="w-full bg-white/10 rounded-md p-8">
                     <h3>{heading}</h3>
