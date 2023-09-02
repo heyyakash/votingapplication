@@ -14,13 +14,16 @@ const election = new Schema({
         type:String,
         required:true
     },
-    createdBy:{
+    createdBy:{ 
         type:mongoose.Schema.Types.ObjectId,
         required:true
     },
     candidates:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'candidates'
+    }],
+    votersList:[{
+        type:Schema.Types.ObjectId
     }]
 })
 

@@ -4,6 +4,7 @@ const connectDB = require('./mongoose')
 const loginRoute = require('./routes/login.routes')
 const electionRoute = require("./routes/election.routes")
 const candidateRoute = require("./routes/candidate.routes")
+const voteRoutes = require('./routes/vote.routes')
 
 const app = express()
 
@@ -27,3 +28,4 @@ try {
 app.use('/user',loginRoute)
 app.use('/election',electionRoute)
 app.use('/candidate', candidateRoute)
+app.use('/vote', voteRoutes)
