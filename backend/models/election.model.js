@@ -24,7 +24,11 @@ const election = new Schema({
     }],
     votersList:[{
         type:Schema.Types.ObjectId
-    }]
+    }],
+    endDate:{
+        type:String,
+        required:true
+    }
 })
 
 

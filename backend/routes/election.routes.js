@@ -6,7 +6,7 @@ const { verify } = require("jsonwebtoken")
 
 router.post('/create',VerifyUser ,async (req,res) => {
     try{
-        const {electionName, electionTopic, electionDescription} = req.body
+        const {electionName, electionTopic, electionDescription, endDate} = req.body
         if(!electionName || !electionTopic || !electionDescription){
             return res.status(400).json({msg:"Parameter missing", status:false})
         }
@@ -14,7 +14,8 @@ router.post('/create',VerifyUser ,async (req,res) => {
             electionName,
             electionTopic, 
             electionDescription,
-            createdBy: req.user
+            createdBy: req.user,
+            endDate
         })
         res.status(200).json({status:true, msg:payload})
     }catch(err){
