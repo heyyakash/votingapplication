@@ -2,7 +2,7 @@ import { createELection } from '@/api/election'
 import modalState from '@/atoms/modal'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoIosClose } from 'react-icons/io'
 
@@ -10,6 +10,7 @@ interface data{
     electionName:string
     electionTopic: string,
     electionDescription: string
+    endDate:string
 }
 
 const PollModal = () => {
@@ -20,14 +21,21 @@ const PollModal = () => {
         setIsOpen(false)
     }
     const router = useRouter()
+    const [loading, setLoading] = useState(false) 
 
     const onSumbit = async (data:data) => {
+        setLoading(true)
+        const {endDate} = data
+        const endDateArray = endDate.split("-").reverse()
+        data.endDate = endDateArray.join("-")
         const res = await createELection(data)
         if(res.status){
             setIsOpen(false)
             router.push(`election/${res.msg["_id"]}`)
         }
+        setLoading(false)
     }
+
 
     if (isOpen)
         return (
@@ -47,10 +55,15 @@ const PollModal = () => {
                             <input type="text" {...register("electionTopic")} required className='input-primary' placeholder='Enter the subject of election' />
                         </div>
                         <div className='flex flex-col gap-3 mb-3'>
+                            <label htmlFor="date" className='px-1 text-sm font-semibold'>Topic of election</label>
+                            <input type="date" {...register("endDate")} required className='input-primary' placeholder='Enter the Last date of election' />
+                        </div>
+                        <div className='flex flex-col gap-3 mb-3'>
                             <label htmlFor="name" className='px-1  text-sm font-semibold'>Description</label>
                             <textarea {...register("electionDescription")} required className='input-primary h-[180px]' placeholder='Enter the description of this election' />
                         </div>
-                        <input type="submit" className='button' value="Add Candidates" />
+                        <button disabled = {loading}  type="submit" className='button disabled:opacity-80 h-[3rem]' >{loading?(<img className='h-10 m-auto ' src = "/loading.gif"  />):(<>Add Candidates</>)}</button>
+
                     </form>
                 </div>
             </section>

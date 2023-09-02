@@ -7,6 +7,7 @@ interface electionData {
 }
 
 export const createELection = async (data:electionData) => {
+    console.log(data)
     const result = await fetch(`${host}/election/create`,{
         method:"post",
         headers:{

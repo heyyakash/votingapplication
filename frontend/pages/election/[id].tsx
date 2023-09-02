@@ -1,6 +1,7 @@
 import { createCandidate, getCandidatesForElection } from '@/api/candidate'
 import { getElection } from '@/api/election'
 import UserCard from '@/components/Card'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -11,24 +12,25 @@ const App = () => {
     const { id } = router.query
     const { data: result } = useQuery(['election', id], async () => await getElection(id as string))
     const [candidates, setCandidates] = useState<any[]>([])
-    const { data:electionCandidates , isLoading, isError} = useQuery('candidates', async () => await getCandidatesForElection(id as string),{
-        onSuccess:(d)=>{
+    const { data: electionCandidates, isLoading, isError } = useQuery('candidates', async () => await getCandidatesForElection(id as string), {
+        onSuccess: (d) => {
             setCandidates(candidates => d.msg)
         }
-    }) 
+    })
     const { msg: data } = result
-    const { register, handleSubmit } = useForm<{email:string}>()
+    const { register, handleSubmit } = useForm<{ email: string }>()
     const [loading, setLoading] = useState(false)
-    
+
 
     const createAndFetchCandidate = async (data: { email: string }) => {
+        setLoading(true)
         const { email } = data
         const res = await createCandidate(email, id as string)
         if (res?.status) {
             console.log(res?.msg)
             setCandidates(candidates => [...candidates, res?.msg])
         }
-
+        setLoading(false)
     }
 
     return (
@@ -47,9 +49,9 @@ const App = () => {
                     <form onSubmit={handleSubmit(createAndFetchCandidate)}>
                         <div className='flex flex-col gap-2 my-2'>
                             <label htmlFor="name" className='px-1 text-sm font-semibold'>Email of the candidate</label>
-                            <input type="email" required {...register("email")}  className='input-primary' placeholder='Enter the email of the candidate' />
+                            <input type="email" required {...register("email")} className='input-primary' placeholder='Enter the email of the candidate' />
                         </div>
-                        <button type="submit"  className='button'>Add Candidate</button>
+                        <button disabled={loading} type="submit" className='button disabled:opacity-80 h-[3rem]' >{loading ? (<img className='h-10 m-auto ' src="/loading.gif" />) : (<>Add Candidates</>)}</button>
                     </form>
                     <div className="flex gap-6  flex-wrap items-cente mt-4">
                         {candidates.map((x, i) => {
@@ -60,6 +62,13 @@ const App = () => {
                         })}
 
                     </div>
+                    {candidates?.length >= 3 ? (
+                        <div className='mt-5 w-full'>
+                        <Link href={`/vote/${id}`}>
+                            <button className="button">Start Poll</button>
+                        </Link>
+                        </div>
+                    ) : (<></>)}
                 </div>
             </div>
         </section>
