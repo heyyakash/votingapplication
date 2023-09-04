@@ -1,17 +1,23 @@
 const jwt = require("jsonwebtoken")
 
-exports.VerifyUser = async(req,res,next) => {
+
+exports.VerifyUser = async (req, res, next) => {
     try {
-        const {token} = req.headers
-        if(!token){
-            return res.status(401).json({msg:"Not Allowed", status:false})
+        const { token } = req.headers;
+        if (!token) {
+            return res.status(401).json({ msg: "Not Allowed", status: false });
         }
-        const decoded = await jwt.verify(token,process.env.JWT_SECRET)
-        const {user} =decoded
-        req.user = user.uid
-        next()
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.error(err);
+                return res.status(401).json({ msg: "Invalid token", status: false });
+            }
+            const { user } = decoded;
+            req.user = user.uid;
+            next();
+        });
     } catch (err) {
-        console.log(err)
-        res.json(500).json({msg:err, status:false})
+        console.error(err);
+        res.status(500).json({ msg: "Internal Server Error", status: false });
     }
-}
+};

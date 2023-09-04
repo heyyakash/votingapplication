@@ -24,6 +24,16 @@ router.post('/create',VerifyUser ,async (req,res) => {
     }
 })
 
+router.get('/', async (req,res)=>{
+    try{
+        const data = await Election.find({})
+        res.status(200).json({msg:data, status:true})
+    }catch(err){
+        console.log(err)
+        res.status(500).json({msg:err,status:false})
+    }
+})
+
 router.get('/eligible/:id',VerifyUser, async(req,res) => {
     try{
         const {id} = req.params
@@ -40,7 +50,7 @@ router.get('/eligible/:id',VerifyUser, async(req,res) => {
     }
 })
 
-router.get('/:id', async (req,res) => { 
+router.get('/:id' ,async (req,res) => { 
     try {
         const {id} = req.params
         const payload = await Election.findOne({
