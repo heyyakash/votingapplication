@@ -10,9 +10,11 @@ import { QueryClient, dehydrate, useQuery } from 'react-query'
 const App = () => {
 
     const router = useRouter()
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
         const token = localStorage.getItem("votingapp_user")
         if (!token) router.push('/login')
+        setLoading(false)
     }, [])
     const { election_id: id } = router.query
     const { data: result, isLoading } = useQuery(['election', id], async () => await getElection(id as string), {
@@ -35,10 +37,15 @@ const App = () => {
         },
         onError: (e) => {
             console.log(e)
-        }
+        },
+
     })
 
-
+    if (loading) {
+        return (
+            <>Loading....</>
+        )
+    }
     return (
         <section className='mt-[9rem] '>
             <div className="max-w-screen-xl px-4 mx-auto">

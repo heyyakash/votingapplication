@@ -22,13 +22,16 @@ export const createELection = async (data:electionData) => {
 
 
 export const checkEligibilty = async (id:string) => {
-    const result = await fetch(`${host}/election/eligible/${id}`,{
-        headers:{
-            "token":localStorage.getItem("votingapp_user") as string
-        }
-    })
-    const res = await result.json()
-    return res  
+    const token = localStorage.getItem("votingapp_user")
+    if(token!==null && token!==undefined){
+        const result = await fetch(`${host}/election/eligible/${id}`,{
+            headers:{
+                "token":localStorage.getItem("votingapp_user") as string
+            }
+        })
+        const res = await result.json()
+        return res  
+    }
 }
 
 
