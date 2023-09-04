@@ -2,6 +2,7 @@ const express = require("express")
 const { VerifyUser } = require("../middlewares/verify")
 const router = express.Router()
 const Candidate = require("../models/candidate.model")
+const Vote = require('../models/vote.model')
 const Election = require("../models/election.model")
 
 router.post('/:election_id', VerifyUser, async (req, res) => {
@@ -22,6 +23,10 @@ router.post('/:election_id', VerifyUser, async (req, res) => {
             $push:{
                 votersList:req.user
             }
+        })
+        await Vote.create({
+            candidate: candidate_id,
+            voter: req.user,
         })
         res.status(200).json({msg:"Vote Casted Successfully", status:true})
     } catch (err) {
