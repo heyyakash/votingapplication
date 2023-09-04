@@ -24,7 +24,9 @@ try {
 } catch (error) {
     console.log(error)
 }
-
+app.get("/",async(req,res)=>{
+    res.send("Hello")
+})
 app.use('/user',loginRoute)
 app.use('/election',electionRoute)
 app.use('/candidate', candidateRoute)
