@@ -16,7 +16,7 @@ const LoginComponent: React.FC<props> = ({ setMode }) => {
         const res = await loginUser(data)
         if(res?.status){
             localStorage.setItem('votingapp_user',res?.authToken)
-            router.push('/')
+            router.back()
         }
     }
     const { handleSubmit, register } = useForm<loginData>()

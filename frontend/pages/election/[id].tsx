@@ -3,12 +3,16 @@ import { getElection } from '@/api/election'
 import UserCard from '@/components/Card'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { QueryClient, dehydrate, useQuery } from 'react-query'
 
 const App = () => {
     const router = useRouter()
+    useEffect(()=>{
+        const token = localStorage.getItem("votingapp_user")
+        if(!token) router.push('/login')
+    },[])
     const { id } = router.query
     const { data: result } = useQuery(['election', id], async () => await getElection(id as string))
     const [candidates, setCandidates] = useState<any[]>([])

@@ -10,7 +10,7 @@ const Layout: React.FC<props> = ({ children }) => {
     return (
         <div>
             <PollModal />
-            <div className='relative z-0'>
+            <div className='relative z-[0]'>
                 <Navbar />
                 {children}
             </div>
