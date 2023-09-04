@@ -16,7 +16,7 @@ const App = () => {
     const { id } = router.query
     const { data: result } = useQuery(['election', id], async () => await getElection(id as string))
     const [candidates, setCandidates] = useState<any[]>([])
-    const { data: electionCandidates, isLoading, isError } = useQuery('candidates', async () => await getCandidatesForElection(id as string), {
+    useQuery('candidates', async () => await getCandidatesForElection(id as string), {
         onSuccess: (d) => {
             setCandidates(candidates => d.msg)
         }
@@ -57,7 +57,7 @@ const App = () => {
                         </div>
                         <button disabled={loading} type="submit" className='button disabled:opacity-80 h-[3rem]' >{loading ? (<img className='h-10 m-auto ' src="/loading.gif" />) : (<>Add Candidates</>)}</button>
                     </form>
-                    <div className="flex gap-6 flex-col md:flex-wrap items-cente mt-4">
+                    <div className="flex gap-6 flex-col md:flex-row md:flex-wrap items-cente mt-4">
                         {candidates.map((x, i) => {
                             const { firstname, lastname, age, gender, email } = x?.uid
                             return (

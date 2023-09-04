@@ -41,3 +41,11 @@ export const getElection = async (id:string) => {
     const res = await result.json()
     return res
 }
+
+
+
+export const getAllElections = async () => {
+    const result = await fetch(`${host}/election`)
+    const res = await result.json()
+    return res
+}

@@ -13,7 +13,7 @@ const Navbar = () => {
     useEffect(()=>{
        if(router.pathname==="/login") setShowLogOut(false)
        else setShowLogOut(true) 
-    },[])
+    },[router.pathname])
 
     return (
         <nav className="bg-black/80 fixed w-full z-20 top-0 left-0 border-b border-gray-600">
