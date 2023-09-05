@@ -14,6 +14,7 @@ const SignupComponent: React.FC<props> = ({ setMode }) => {
     const submitDetails = async (data: signupData) => {
         const res = await createUser(data)
         if(res?.status){
+            alert(res?.msg)
             setMode('login')
         }
   
